@@ -10,8 +10,21 @@
         src:url("./Pathfinder2eActions.ttf");
     }
 body{
+    display: flex;
+    justify-content: center;
+    align-content: center;
     font-family: 'Roboto Condensed', sans-serif;
 }    
+
+footer{
+    position: absolute; bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0 1em 0 1em;
+    border-top: 2px solid black;
+    background-image: linear-gradient(to bottom,#F3EFEC33 50%,#C6BAA8CC 120%),url("https://www.transparenttextures.com/patterns/clean-gray-paper.png");
+}
+
 #header{
     display: flex;
     font-variant: small-caps;
@@ -37,11 +50,13 @@ body{
 }
 
 #target{
-    background: url(https://www.gmbinder.com/images/Nrkf77U.jpg);
+    background-image: radial-gradient(ellipse  at center,#F3EFEC88 75%,#C6BAA8CC 120%),url("https://www.transparenttextures.com/patterns/clean-gray-paper.png");
     padding: 1em;
     width: 30em;
     resize: both;
     overflow: auto;
+    border: 2px solid black ;
+    border-radius: 5px;
 }
 #tags{
     margin-top: 0.5em;
@@ -49,11 +64,13 @@ body{
     width: 100%;
     display: flex;
     flex-wrap: wrap;
+    position: relative;
 }
 
 #tags tag{
     font-family: 'Tauri', sans-serif;
     font-variant: small-caps;
+    position: relative;
     height: 1.2em;
     color: white;
     background-color: #5D0000;
@@ -68,53 +85,77 @@ body{
     background-color: transparent !important;
 }
 
-#section-group, #later-section-group{
-    min-height: 0.5em;
+#section-group, #later-section-group,#last-section-group{
+    position: relative;
+    min-height: 1em;
 }
 #section-group b{
     display: inline;
 }
+.section{
+    position: relative;
+}
 
 #section-group div:last-of-type {
+    padding-bottom: 3px;
     border-bottom: 2px solid;
 }
-.buttongroup{
-    margin-left: auto;
-    display: none;
-    }
-
-.buttongroup button{
-    color: white;
-    font-size: 1em;
-    border: 2px solid black;
-    border-radius: 3px;
-    opacity: 0.7;
+#last-section-group div:first-of-type {
+    padding-top: 3px;
+    border-top: 2px solid;
 }
-.buttongroup button:hover{
+
+button.hidden{
+    display: none;
+    color: white;
+    font-size: 1.2em;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid black;
+    position: absolute;
+    width: 1em;
+    height: 1em;
     opacity: 1;
 }
+.substract{    background-color: darkred;}  .substract:hover{    background-color: red;}
+.add{    background-color: green;}  .add:hover{background-color: lime;}
 
-.substract{
-    background-color: darkred;
+tag .hidden.substract{
+    left: -0.5em;
+    top: -0.5em;
+    border-radius: 50%;
 }
-.add{
-    background-color: green;
+.section .hidden.substract{
+    left: -0.8em;
+    top: -0.3em;
+    border-radius: 50%;
 }
 
-div:hover .buttongroup{
-    display: initial;
-
+.add.hidden{
+    right: 0;
+    top: 0;
+    border-radius: 15%;
+}
+*:hover> .hidden{
+    display: flex;
 }
 
 </style>
 
 <script>
-    
+    //    <button class="hidden substract" onclick="substractSelf(this)">-</button></tag>
    var baseNodes ={};
    function makeTag(){
-       ret = document.createElement("tag");
-        ret.textContent="trait";
-        ret.contentEditable=true;
+        ret = document.createElement("tag");
+        sub = document.createElement("button");
+        sub.classList.add("substract");  sub.classList.add("hidden");
+        sub.setAttribute("onclick","substractSelf(this)")
+        sub.textContent="-";
+        sp=document.createElement("span");
+        sp.textContent="trait";
+        sp.contentEditable=true;
+        ret.appendChild(sp)
+        ret.appendChild(sub);
         return ret;
    }
    
@@ -129,6 +170,11 @@ div:hover .buttongroup{
        s.textContent="Description...";
        s.contentEditable=true;
        ret.appendChild(s);
+       sub = document.createElement("button");
+        sub.classList.add("substract");  sub.classList.add("hidden");
+        sub.setAttribute("onclick","substractSelf(this)")
+        sub.textContent="-";
+        ret.appendChild(sub);
        return ret;
    }
    function init(){
@@ -155,6 +201,10 @@ function substractElement(id){
     }
 }
 
+function substractSelf(context){
+    console.log(context.parentNode.remove());
+}
+
 </script>
 </head>
 <body spellcheck="false" >
@@ -163,26 +213,34 @@ function substractElement(id){
             <h2 id="Title"><div contenteditable>Title</div> <select><option > </option> <option selected>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></h2> <h2 id="type"contenteditable>Feat 1</h2>
         </div>
         <div id="tags"> 
-            <tag contenteditable>Trait</tag>
-            <div class="buttongroup">
+            <tag> <span contenteditable>Trait</span> 
+                <button class="hidden substract" onclick="substractSelf(this)">-</button></tag>
                 <button class="hidden add" onclick="addElement('tags','tag')">+</button>
-                <button class="hidden substract" onclick="substractElement('tags')">-</button>
-            </div>
         </div>
         <div id="section-group">
-        <div class="section"><b contenteditable>Section</b> <span contenteditable>Description...</span></div>
-        <buttons class="buttongroup">
+        <div class="section">
+            <b contenteditable>Section</b> <span contenteditable>Description...</span>
+            <button class="hidden substract" onclick="substractSelf(this)">-</button>
+        </div>
             <button class="hidden add" onclick="addElement('section-group','section')">+</button>
-            <button class="hidden substract" onclick="substractElement('section-group')">-</button>
-        </buttons>
         </div>
         <div id="body">Click Anywhere to edit!</div>
         <div id="later-section-group">
-            <div class="section"><b contenteditable>Success</b> <span contenteditable>Description...</span></div>
-            <div class="buttongroup">
+            <div class="section">
+                <b contenteditable>Success</b> <span contenteditable>Description...</span>
+                <button class="hidden substract" onclick="substractSelf(this)">-</button>
+            </div>
                 <button class="hidden add" onclick="addElement('later-section-group','section')">+</button>
-                <button class="hidden substract" onclick="substractElement('later-section-group')">-</button>
             </div>
-            </div>
+            <div id="last-section-group">
+                <div class="section">
+                    <b contenteditable>Heighten:</b> <span contenteditable>Description...</span>
+                    <button class="hidden substract" onclick="substractSelf(this)">-</button>
+                </div>
+                    <button class="hidden add" onclick="addElement('last-section-group','section')">+</button>
+                </div>
     </article>
+    <footer>
+        <h3> This website uses trademarks and/or copyrights owned by Paizo Inc., used under Paizo's Community Use Policy (paizo.com/communityuse). We are expressly prohibited from charging you to use or access this content. This website is not published, endorsed, or specifically approved by Paizo. For more information about Paizo Inc. and Paizo products, visit <a href="https://www.paizo.com">paizo.com</a>.</h3>
+    </footer>
 </body>
