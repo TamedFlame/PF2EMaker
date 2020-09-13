@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<head>
+    <title>Pathfinder 2E Simple Entry Maker</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed&family=Tauri&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/squire-rte/1.10.2/squire.min.js" integrity="sha512-o9MnMIBrg2hDa+Pm/atN9nfe8QTgolTnMLsLaoTnYPMPWktXZoXjh+j6YW2kLXIgv4z1qJaVIjgcgYNGceBc9A==" crossorigin="anonymous"></script>
+<style>
+
+    @font-face{
+        font-family: "Actions";
+        src:url("./Pathfinder2eActions.ttf");
+    }
+body{
+    font-family: 'Roboto Condensed', sans-serif;
+}    
+#header{
+    display: flex;
+    font-variant: small-caps;
+    justify-content: space-between;
+    border-bottom:2px solid ;
+}
+
+#header select{
+    font-size: inherit;
+    appearance: none;
+    -webkit-appearance: none;
+    background: transparent;
+    border: none;
+    font-family: "Actions";
+}
+
+#header h2{
+    margin-bottom: 0;
+}
+
+#target{
+    background: url(https://www.gmbinder.com/images/Nrkf77U.jpg);
+    padding: 1em;
+    width: 30em;
+    resize: both;
+    overflow: auto;
+}
+#tags{
+    margin-top: 0.5em;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#tags tag{
+    font-family: 'Tauri', sans-serif;
+    font-variant: small-caps;
+    height: 1.2em;
+    color: white;
+    background-color: darkred;
+    padding: 0 1em 0 1em ;
+    border: 2px solid burlywood;
+}
+#body{
+    white-space: pre-wrap;
+    text-align: justify;
+}
+#body *{
+    background-color: transparent !important;
+}
+
+#section b{
+    display: inline;
+}
+.buttongroup{
+    margin-left: auto;
+    display: none;
+    }
+
+.buttongroup button{
+    color: white;
+    font-size: 1em;
+    border: 2px solid black;
+    border-radius: 3px;
+    opacity: 0.7;
+}
+.buttongroup button:hover{
+    opacity: 1;
+}
+
+.substract{
+    background-color: darkred;
+}
+.add{
+    background-color: green;
+}
+
+div:hover .buttongroup{
+    display: initial;
+
+}
+
+</style>
+
+<script>
+    
+   var baseNodes ={};
+   function makeTag(){
+       ret = document.createElement("tag");
+        ret.textContent="trait";
+        ret.contentEditable=true;
+        return ret;
+   }
+   
+   function makeSection(){
+       ret = document.createElement("div");
+       b = document.createElement("b");
+       b.textContent="Section ";
+       b.contentEditable=true;
+       ret.appendChild(b);
+       s = document.createElement("span");
+       s.textContent="Description...";
+       s.contentEditable=true;
+       ret.appendChild(s);
+       return ret;
+   }
+   function init(){
+        baseNodes["tag"]= makeTag();
+        baseNodes["section"]=makeSection();
+        body = document.getElementById('body');
+        editor=new Squire(body,{
+        blockAttributes: { style: 'text-align: justify;' }});
+        editor.setHTML("Click anywhere to edit! This section supports <i>Rich</i> <b>Text</b>!")
+        console.log(editor)
+
+   }
+    window.onload=init;
+
+function addElement(id, elem){
+    container= document.getElementById(id);
+    container.insertBefore(baseNodes[elem].cloneNode(true),container.lastElementChild);
+}
+
+function substractElement(id){
+    container= document.getElementById(id);
+    if(!container.firstElementChild.classList.contains("buttongroup") ){
+        container.removeChild(container.firstElementChild);
+    }
+}
+
+</script>
+</head>
+<body>
+    <article id="target" >
+        <div id="header">
+            <h2 id="Title" contenteditable>Title <select><option > </option> <option selected>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></h2> <h2 id="type"contenteditable>Feat 1</h2>
+        </div>
+        <div id="tags"> 
+            <tag contenteditable>Trait</tag>
+            <div class="buttongroup">
+                <button class="hidden add" onclick="addElement('tags','tag')">+</button>
+                <button class="hidden substract" onclick="substractElement('tags')">-</button>
+            </div>
+        </div>
+        <div id="section-group">
+        <div><b contenteditable>Section</b> <span contenteditable>Description...</span></div>
+        <div class="buttongroup">
+            <button class="hidden add" onclick="addElement('section-group','section')">+</button>
+            <button class="hidden substract" onclick="substractElement('section-group')">-</button>
+        </div>
+        </div>
+        <div id="body">Click Anywhere to edit!</div>
+        <div id="later-section-group">
+            <div id="section"><b contenteditable>Success</b> <span contenteditable>Description...</span></div>
+            <div class="buttongroup">
+                <button class="hidden add" onclick="addElement('later-section-group','section')">+</button>
+                <button class="hidden substract" onclick="substractElement('later-section-group')">-</button>
+            </div>
+            </div>
+    </article>
+</body>
