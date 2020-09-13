@@ -19,6 +19,10 @@ body{
     border-bottom:2px solid ;
 }
 
+#Title *{
+    display: inline-block;
+}
+
 #header select{
     font-size: inherit;
     appearance: none;
@@ -63,8 +67,12 @@ body{
     background-color: transparent !important;
 }
 
-#section b{
+#section-group b{
     display: inline;
+}
+
+#section-group div:last-of-type {
+    border-bottom: 2px solid;
 }
 .buttongroup{
     margin-left: auto;
@@ -108,6 +116,7 @@ div:hover .buttongroup{
    
    function makeSection(){
        ret = document.createElement("div");
+       ret.classList.add("section")
        b = document.createElement("b");
        b.textContent="Section ";
        b.contentEditable=true;
@@ -144,10 +153,10 @@ function substractElement(id){
 
 </script>
 </head>
-<body>
+<body spellcheck="false" >
     <article id="target" >
         <div id="header">
-            <h2 id="Title" contenteditable>Title <select><option > </option> <option selected>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></h2> <h2 id="type"contenteditable>Feat 1</h2>
+            <h2 id="Title"><div contenteditable>Title</div> <select><option > </option> <option selected>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></h2> <h2 id="type"contenteditable>Feat 1</h2>
         </div>
         <div id="tags"> 
             <tag contenteditable>Trait</tag>
@@ -157,15 +166,15 @@ function substractElement(id){
             </div>
         </div>
         <div id="section-group">
-        <div><b contenteditable>Section</b> <span contenteditable>Description...</span></div>
-        <div class="buttongroup">
+        <div class="section"><b contenteditable>Section</b> <span contenteditable>Description...</span></div>
+        <buttons class="buttongroup">
             <button class="hidden add" onclick="addElement('section-group','section')">+</button>
             <button class="hidden substract" onclick="substractElement('section-group')">-</button>
-        </div>
+        </buttons>
         </div>
         <div id="body">Click Anywhere to edit!</div>
         <div id="later-section-group">
-            <div id="section"><b contenteditable>Success</b> <span contenteditable>Description...</span></div>
+            <div class="section"><b contenteditable>Success</b> <span contenteditable>Description...</span></div>
             <div class="buttongroup">
                 <button class="hidden add" onclick="addElement('later-section-group','section')">+</button>
                 <button class="hidden substract" onclick="substractElement('later-section-group')">-</button>
